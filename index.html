@@ -85,8 +85,8 @@
   .stat:last-child { border-right: none; }
   .stat-num { font-size: 22px; font-weight: 600; color: var(--esr-cyan); letter-spacing: 1px; }
   .stat-label { font-size: 9.5px; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-top: 3px; line-height: 1.5; }
-  .btn { display: block; text-align: center; padding: 11px 8px; border-radius: 10px; border: 1px solid rgba(0,180,216,0.35); text-decoration: none; color: #c8e8f8; font-size: 13px; font-family: 'Rajdhani', sans-serif; font-weight: 500; letter-spacing: 1px; background: rgba(0,180,216,0.05); transition: background 0.2s, color 0.2s; margin-bottom: 9px; }
-  .btn:hover { background: rgba(0,180,216,0.15); color: #fff; }
+  .save-btn { display: block; width: 100%; text-align: center; padding: 13px; border-radius: 12px; border: 1px solid rgba(0,180,216,0.55); color: #fff; font-size: 14px; font-family: 'Rajdhani', sans-serif; font-weight: 600; letter-spacing: 2px; background: rgba(0,119,168,0.25); cursor: pointer; margin-bottom: 18px; transition: background 0.2s; }
+  .save-btn:hover { background: rgba(0,119,168,0.45); }
   .footer { text-align: center; font-size: 11px; letter-spacing: 2px; color: rgba(110,198,230,0.45); padding: 10px 0 4px; text-transform: uppercase; }
 </style>
 </head>
@@ -140,8 +140,42 @@
         <div class="stat-label">PROJECTS<br>ПРОЕКТОВ</div>
       </div>
     </div>
+    <button class="save-btn" onclick="saveContact()">⬇ Save Contact &nbsp;·&nbsp; Сохранить контакт</button>
     <div class="footer">Almaty, Kazakhstan · ESR LLP</div>
   </div>
 </div>
+
+<script>
+function saveContact() {
+  var vcard = [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    'FN:Valeriy Tyugay',
+    'N:Tyugay;Valeriy;;;',
+    'TITLE:Director',
+    'ORG:Energy System Researches LLP',
+    'TEL;TYPE=CELL:+77017659155',
+    'EMAIL:tyugay.valeriy@esr.kz',
+    'URL:https://esr.kz',
+    'END:VCARD'
+  ].join('\r\n');
+
+  var blob = new Blob([vcard], {type: 'text/vcard'});
+  var url = URL.createObjectURL(blob);
+
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (isIOS) {
+    window.open(url, '_blank');
+  } else {
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'valeriy-tyugay.vcf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+</script>
 </body>
 </html>
